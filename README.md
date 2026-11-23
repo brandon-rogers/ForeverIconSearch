@@ -54,6 +54,17 @@ lua5.1 tools/test_harness.lua
 
 This stubs the WoW API and Blizzard's picker to check the hook and filter logic. It does not replace testing in the game.
 
+## Releasing
+
+Pushing a `v*` tag runs the [BigWigs packager](https://github.com/BigWigsMods/packager) in GitHub Actions. It builds the zip, uploads it to [CurseForge](https://www.curseforge.com/wow/addons/forever-icon-search) and creates the GitHub release. The version in the `.toc` is filled in from the tag.
+
+```bash
+git tag v0.1.1
+git push origin v0.1.1
+```
+
+This needs a CurseForge API token stored as the `CF_API_KEY` repository secret.
+
 ## License
 
 [MIT](LICENSE). `ForeverIconSearch/IconNames.lua` is generated from the [wowdev/wow-listfile](https://github.com/wowdev/wow-listfile) community listfile.

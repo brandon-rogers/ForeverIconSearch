@@ -1,0 +1,6 @@
+package-as: ForeverIconSearch
+
+ignore:
+  - assets
+  - tools
+  - README.md
