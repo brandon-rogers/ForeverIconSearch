@@ -1,5 +1,9 @@
 package-as: ForeverIconSearch
 
+# The addon lives in a subfolder; this makes it the root of the package.
+move-folders:
+  ForeverIconSearch/ForeverIconSearch: ForeverIconSearch
+
 ignore:
   - assets
   - tools
