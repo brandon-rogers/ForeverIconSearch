@@ -1,4 +1,4 @@
-## Interface: 16001, 120105
+## Interface: 16001
 ## Title: Forever Icon Search
 ## Notes: Adds a search box to icon pickers (macros, equipment manager, guild bank tabs).
 ## Version: @project-version@
