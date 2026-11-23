@@ -53,3 +53,7 @@ lua5.1 tools/test_harness.lua
 ```
 
 This stubs the WoW API and Blizzard's picker to check the hook and filter logic. It does not replace testing in the game.
+
+## License
+
+[MIT](LICENSE). `IconPickerSearch/IconNames.lua` is generated from the [wowdev/wow-listfile](https://github.com/wowdev/wow-listfile) community listfile.
