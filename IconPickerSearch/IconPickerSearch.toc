@@ -1,0 +1,8 @@
+## Interface: 16001, 120105
+## Title: Icon Picker Search
+## Notes: Adds a search box to icon pickers (macros, equipment manager, guild bank tabs).
+## Version: 0.1.0
+## Category: Interface Enhancements
+
+IconNames.lua
+Core.lua
