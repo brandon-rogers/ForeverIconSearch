@@ -1,0 +1,28 @@
+name: CurseForge API check (temporary)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      CF_API_KEY: ${{ secrets.CF_API_KEY }}
+    steps:
+      - name: Inspect secret shape (no value printed)
+        run: |
+          printf 'length=%s\n' "${#CF_API_KEY}"
+          if [[ "$CF_API_KEY" =~ ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$ ]]; then
+            echo "format=uuid"
+          else
+            echo "format=NOT a bare uuid (whitespace, quotes or wrong value?)"
+          fi
+
+      - name: Query CurseForge game versions
+        run: |
+          for url in https://wow.curseforge.com/api/game/wow/versions https://wow.curseforge.com/api/game/versions; do
+            echo "== $url"
+            code=$(curl -s -o body.json -w '%{http_code}' -H "x-api-token: $CF_API_KEY" "$url")
+            echo "http=$code"
+            jq -r 'if type=="object" then "error: \(.errorMessage // .)" else "versions=\(length) forever(88568)=\(map(select(.gameVersionTypeID==88568)) | length) latest_forever=\(map(select(.gameVersionTypeID==88568)) | max_by(.id) | .name // "none")" end' body.json 2>/dev/null || head -c 300 body.json
+          done
