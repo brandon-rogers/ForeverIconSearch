@@ -1,4 +1,4 @@
-# Icon Picker Search
+# Forever Icon Search
 
 A World of Warcraft addon that adds a search box to icon pickers.
 
@@ -20,13 +20,13 @@ Results are deduplicated. Clicking a result, the OK button and the All/Spell/Ite
 
 ## Install
 
-Copy the `IconPickerSearch` folder into:
+Copy the `ForeverIconSearch` folder into:
 
 ```
-World of Warcraft/_retail_/Interface/AddOns/
+World of Warcraft/_forever_/Interface/AddOns/
 ```
 
-If your client's interface version is newer than the one in `IconPickerSearch.toc`, update that number or enable "Load out of date AddOns".
+If your client's interface version is newer than the one in `ForeverIconSearch.toc`, update that number or enable "Load out of date AddOns".
 
 `/iconsearch` prints how many icon names are loaded and how many pickers are hooked. `/iconsearch debug` toggles error output from the name collectors.
 
@@ -44,7 +44,7 @@ When a patch adds icons:
 python3 tools/build_icon_names.py
 ```
 
-This downloads the latest [wowdev/wow-listfile](https://github.com/wowdev/wow-listfile) and rewrites `IconPickerSearch/IconNames.lua`. You can also pass a local `community-listfile.csv` path.
+This downloads the latest [wowdev/wow-listfile](https://github.com/wowdev/wow-listfile) and rewrites `ForeverIconSearch/IconNames.lua`. You can also pass a local `community-listfile.csv` path.
 
 ## Offline test
 
@@ -56,4 +56,4 @@ This stubs the WoW API and Blizzard's picker to check the hook and filter logic.
 
 ## License
 
-[MIT](LICENSE). `IconPickerSearch/IconNames.lua` is generated from the [wowdev/wow-listfile](https://github.com/wowdev/wow-listfile) community listfile.
+[MIT](LICENSE). `ForeverIconSearch/IconNames.lua` is generated from the [wowdev/wow-listfile](https://github.com/wowdev/wow-listfile) community listfile.

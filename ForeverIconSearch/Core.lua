@@ -1,4 +1,4 @@
--- IconPickerSearch: adds a search box to every Blizzard icon picker that is
+-- ForeverIconSearch: adds a search box to every Blizzard icon picker that is
 -- built on IconSelectorPopupFrameTemplate (macros, equipment sets, guild bank
 -- tabs, and any addon that reuses the template).
 --
@@ -433,8 +433,8 @@ events:SetScript("OnEvent", function()
 end)
 
 -- Optional: /iconsearch debug
-SLASH_ICONPICKERSEARCH1 = "/iconsearch"
-SlashCmdList.ICONPICKERSEARCH = function(msg)
+SLASH_FOREVERICONSEARCH1 = "/iconsearch"
+SlashCmdList.FOREVERICONSEARCH = function(msg)
 	msg = (msg or ""):lower()
 	if msg == "debug" then
 		ns.debug = not ns.debug

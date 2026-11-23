@@ -1,5 +1,5 @@
 -- Offline smoke test: stubs just enough of the WoW API and Blizzard's
--- IconSelectorPopupFrameTemplate to exercise IconPickerSearch's hook and
+-- IconSelectorPopupFrameTemplate to exercise ForeverIconSearch's hook and
 -- filter logic. Run from the repo root:  lua5.1 tools/test_harness.lua
 -- This does NOT replace testing in the game client.
 
@@ -97,10 +97,10 @@ end
 local ns = {}
 local function load(path)
 	local chunk = assert(loadfile(path))
-	chunk("IconPickerSearch", ns)
+	chunk("ForeverIconSearch", ns)
 end
-load("IconPickerSearch/IconNames.lua")
-load("IconPickerSearch/Core.lua")
+load("ForeverIconSearch/IconNames.lua")
+load("ForeverIconSearch/Core.lua")
 
 -- Simulate Blizzard's subclass OnShow: base OnShow, create provider, Update().
 local function ShowPicker()

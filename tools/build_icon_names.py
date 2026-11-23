@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate IconPickerSearch/IconNames.lua from the wowdev community listfile.
+"""Regenerate ForeverIconSearch/IconNames.lua from the wowdev community listfile.
 
 Usage:
     python3 tools/build_icon_names.py                 # download latest listfile
@@ -16,7 +16,7 @@ import urllib.request
 from pathlib import Path
 
 LISTFILE_URL = "https://github.com/wowdev/wow-listfile/releases/latest/download/community-listfile.csv"
-OUT = Path(__file__).resolve().parent.parent / "IconPickerSearch" / "IconNames.lua"
+OUT = Path(__file__).resolve().parent.parent / "ForeverIconSearch" / "IconNames.lua"
 ICON_RE = re.compile(r"^(\d+);interface/icons/([^/]+)\.(?:blp|png|tga)$", re.IGNORECASE)
 
 
