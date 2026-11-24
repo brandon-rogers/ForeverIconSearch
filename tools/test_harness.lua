@@ -66,7 +66,7 @@ _G.GetInventoryItemTexture = function(_, slot) if slot == 16 then return 135274 
 _G.GetInventoryItemLink = function(_, slot) if slot == 16 then return "|cff|Hitem:1|h[Ashkandi, Greatsword of the Brotherhood]|h|r" end end
 
 -- Blizzard template stand-in --------------------------------------------------
-local ALL_ICONS = { "INTERFACE\\ICONS\\INV_MISC_QUESTIONMARK", 135812, 135274, 132089, 132090, 135812 }
+local ALL_ICONS = { "INTERFACE\\ICONS\\INV_MISC_QUESTIONMARK", 135812, 135274, 132089, 132090, 135812, 132253 }
 _G.IconSelectorPopupFrameTemplateMixin = {
 	OnShow = noop,
 	GetIconByIndex = function(self, i) return self.iconDataProvider.icons[i] end,
@@ -100,6 +100,7 @@ local function load(path)
 	chunk("ForeverIconSearch", ns)
 end
 load("ForeverIconSearch/IconNames.lua")
+load("ForeverIconSearch/IconGameNames.lua")
 load("ForeverIconSearch/Core.lua")
 
 -- Simulate Blizzard's subclass OnShow: base OnShow, create provider, Update().
@@ -127,10 +128,12 @@ _G.CreateFrame = function(...) local f = realCreate(...); _G.__searchBox = f; re
 ShowPicker()
 assert(_G.__searchBox, "search box was not created on show")
 
-check("no query shows everything", "", table.concat({ "INTERFACE\\ICONS\\INV_MISC_QUESTIONMARK", 135812, 135274, 132089, 132090, 135812 }, ","))
+check("no query shows everything", "", table.concat({ "INTERFACE\\ICONS\\INV_MISC_QUESTIONMARK", 135812, 135274, 132089, 132090, 135812, 132253 }, ","))
+check("spell name from game data", "razzashi", "132253")
+check("item name from game data", "whistle obsidian", "132253")
 check("file name", "ambush", "132089")
 check("multi-word AND", "ability back", "132090")
-check("exclusion", "ability -ambush", "132090")
+check("exclusion", "ability_ -ambush -mount", "132090")
 check("spell name (dedup)", "fireball", "135812")
 check("equipped item name", "ashkandi", "135274")
 check("file id", "132090", "132090")
@@ -138,7 +141,7 @@ check("string path icon", "questionmark", "INTERFACE\\ICONS\\INV_MISC_QUESTIONMA
 check("no matches", "zzzznotathing", "")
 
 -- GetIndexOfIcon must agree with the filtered list (used for highlighting).
-_G.__searchBox:SetText("ability"); FlushTimers()
+_G.__searchBox:SetText("ability_ -mount"); FlushTimers()
 assert(picker:GetIndexOfIcon(132090) == 2, "GetIndexOfIcon filtered")
 
 -- Hiding resets the filter.

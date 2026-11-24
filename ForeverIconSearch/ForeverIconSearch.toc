@@ -6,4 +6,5 @@
 ## X-Curse-Project-ID: 1826624
 
 IconNames.lua
+IconGameNames.lua
 Core.lua

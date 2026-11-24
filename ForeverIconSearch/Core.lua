@@ -18,30 +18,44 @@ end
 local L = {
 	SEARCH = SEARCH or "Search",
 	NO_MATCHES = "No icons match your search",
-	TOOLTIP = "Search by icon file name (e.g. |cffffffffsword|r, |cffffffffinv_misc|r), by the name of a spell, mount or item you have, or by file ID.\n\nSeparate words to require all of them; prefix a word with |cffffffff-|r to exclude it.",
+	TOOLTIP = "Search by icon file name (e.g. |cffffffffsword|r, |cffffffffinv_misc|r), by the name of any spell or item that uses the icon, or by file ID.\n\nSeparate words to require all of them; prefix a word with |cffffffff-|r to exclude it.",
 }
 
 local DEBOUNCE_SECONDS = 0.15
 local QUESTION_MARK_FILE_ID = 134400
 
 --------------------------------------------------------------------------------
--- Icon file name database (generated, parsed lazily on first search)
+-- Generated databases, parsed lazily on first search:
+--   IconNames.lua      fileID -> icon file name
+--   IconGameNames.lua  fileID -> names of every spell and item using the icon
 --------------------------------------------------------------------------------
 
-local nameByFileID
+local function ParseData(field)
+	local db = {}
+	local data = ns[field]
+	if data then
+		for id, value in data:gmatch("(%d+)=([^\n]+)") do
+			db[tonumber(id)] = value
+		end
+	end
+	ns[field] = nil -- let the big string be collected
+	return db
+end
+
+local nameByFileID, gameNamesByFileID
 
 local function GetFileNameDB()
 	if not nameByFileID then
-		nameByFileID = {}
-		local data = ns.ICON_NAME_DATA
-		if data then
-			for id, name in data:gmatch("(%d+)=([^\n]+)") do
-				nameByFileID[tonumber(id)] = name
-			end
-		end
-		ns.ICON_NAME_DATA = nil -- let the big string be collected
+		nameByFileID = ParseData("ICON_NAME_DATA")
 	end
 	return nameByFileID
+end
+
+local function GetGameNameDB()
+	if not gameNamesByFileID then
+		gameNamesByFileID = ParseData("ICON_GAME_NAME_DATA")
+	end
+	return gameNamesByFileID
 end
 
 --------------------------------------------------------------------------------
@@ -155,6 +169,10 @@ local function GetHaystack(icon)
 	if fileID then
 		parts[#parts + 1] = GetFileNameDB()[fileID] or ""
 		parts[#parts + 1] = tostring(fileID)
+		local known = GetGameNameDB()[fileID]
+		if known then
+			parts[#parts + 1] = known
+		end
 		if fileID == QUESTION_MARK_FILE_ID then
 			parts[#parts + 1] = "inv_misc_questionmark"
 		end
@@ -444,7 +462,7 @@ SlashCmdList.FOREVERICONSEARCH = function(msg)
 		for _ in pairs(states) do
 			count = count + 1
 		end
-		print(("%s: %d icon names loaded, %d picker(s) hooked."):format(
-			ADDON_NAME, ns.ICON_NAME_COUNT or 0, count))
+		print(("%s: %d icon file names, %d icons with spell/item names, %d picker(s) hooked."):format(
+			ADDON_NAME, ns.ICON_NAME_COUNT or 0, ns.ICON_GAME_NAME_COUNT or 0, count))
 	end
 end

@@ -12,7 +12,8 @@ It works with every picker built on Blizzard's shared `IconSelectorPopupFrameTem
 ## What you can search
 
 - **Icon file names**: `sword`, `inv_misc_gem`, `ability_rogue`. About 34k names come from the community listfile.
-- **Names from your character**: spells in your spellbook, collected mounts, equipped gear and items in your bags. For example, `fireball` finds the Fireball icon.
+- **Spell and item names**: every spell and item in WoW: Forever that uses the icon, whether or not your character has it. For example, `razzashi` finds `ability_mount_raptor`. That's about 37k names across 4k icons, from the game's own data tables.
+- **Names from your character**: spells in your spellbook, collected mounts, equipped gear and items in your bags. This covers anything newer than the bundled data.
 - **File IDs**: `134400`
 - **Several words**: `sword fire` must match both words. Put `-` before a word to exclude it: `sword -fire`.
 
@@ -28,7 +29,7 @@ World of Warcraft/_forever_/Interface/AddOns/
 
 If your client's interface version is newer than the one in `ForeverIconSearch.toc`, update that number or enable "Load out of date AddOns".
 
-`/iconsearch` prints how many icon names are loaded and how many pickers are hooked. `/iconsearch debug` toggles error output from the name collectors.
+`/iconsearch` prints how many icon names and spell/item names are loaded, and how many pickers are hooked. `/iconsearch debug` toggles error output from the name collectors.
 
 ## How it works
 
@@ -36,15 +37,20 @@ Each picker reads icons through three frame methods: `GetIconByIndex`, `GetNumIc
 
 Pickers are found by hooking `IconSelectorPopupFrameTemplateMixin.OnShow`. Every subclass calls it before its own `Update()`, so load-on-demand pickers such as the macro UI are covered too.
 
-## Regenerating the icon name list
+## Regenerating the search data
 
-When a patch adds icons:
+When a patch adds icons, spells or items:
 
 ```bash
 python3 tools/build_icon_names.py
 ```
 
-This downloads the latest [wowdev/wow-listfile](https://github.com/wowdev/wow-listfile) and rewrites `ForeverIconSearch/IconNames.lua`. You can also pass a local `community-listfile.csv` path.
+This rewrites two generated files:
+
+- `ForeverIconSearch/IconNames.lua`: icon file names, from the latest [wowdev/wow-listfile](https://github.com/wowdev/wow-listfile).
+- `ForeverIconSearch/IconGameNames.lua`: the spell and item names that use each icon, built from the WoW: Forever game tables (`SpellName`, `SpellMisc`, `ItemSparse`, `Item`) on [wago.tools](https://wago.tools).
+
+Run it with `--help` for options, such as using local copies or rebuilding only one file.
 
 ## Offline test
 
@@ -67,4 +73,4 @@ This needs a CurseForge API token stored as the `CF_API_KEY` repository secret.
 
 ## License
 
-[MIT](LICENSE). `ForeverIconSearch/IconNames.lua` is generated from the [wowdev/wow-listfile](https://github.com/wowdev/wow-listfile) community listfile.
+[MIT](LICENSE). `ForeverIconSearch/IconNames.lua` is generated from the [wowdev/wow-listfile](https://github.com/wowdev/wow-listfile) community listfile. `ForeverIconSearch/IconGameNames.lua` is generated from game data published on [wago.tools](https://wago.tools).
